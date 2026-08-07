@@ -1,0 +1,31 @@
+{
+  "name": "dendrite-admin-mcp",
+  "version": "0.1.0",
+  "description": "MCP server exposing Dendrite's admin API (user, room, media, and federation administration) as tools for LLM agents.",
+  "type": "module",
+  "main": "dist/index.js",
+  "bin": {
+    "dendrite-admin-mcp": "dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsx watch src/index.ts",
+    "start": "node dist/index.js",
+    "typecheck": "tsc --noEmit",
+    "inspector": "npx @modelcontextprotocol/inspector node dist/index.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.12.0",
+    "express": "^5.2.1",
+    "zod": "^3.24.0"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.10.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.7.0"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

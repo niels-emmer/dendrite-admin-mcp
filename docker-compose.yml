@@ -1,0 +1,15 @@
+services:
+  dendrite-admin-mcp:
+    build: .
+    image: dendrite-admin-mcp:latest
+    container_name: dendrite-admin-mcp
+    restart: unless-stopped
+    env_file: .env
+    ports:
+      - "3939:3939"
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1:3939/healthz"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
