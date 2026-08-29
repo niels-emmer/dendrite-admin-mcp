@@ -58,6 +58,8 @@ This builds the image, starts the container with `restart: unless-stopped`, and 
 
 ## Tools
 
+Full API reference (params, request bodies, curl examples): see [`API.md`](API.md).
+
 | Tool | Dendrite endpoint |
 |---|---|
 | `evacuate_room` | `POST /_dendrite/admin/evacuateRoom/{roomID}` |
