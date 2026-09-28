@@ -26,6 +26,12 @@ npm run setup -- --base-url <url> --admin-token <token> \
   [--shared-secret <secret>] [--transport stdio|http]
 ```
 
+Prefer not to run the setup script? Copy the template and fill it in manually:
+
+```bash
+cp .env.example .env   # then edit .env with your values
+```
+
 | Value | Required | Where to find it |
 |---|---|---|
 | `DENDRITE_BASE_URL` | yes | Your homeserver's client-facing URL, e.g. `https://matrix.example.com` |
