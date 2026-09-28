@@ -31,7 +31,7 @@ In scope:
 
 Out of scope (report upstream instead):
 
-- Vulnerabilities in [Dendrite](https://github.com/matrix-org/dendrite)
+- Vulnerabilities in [Dendrite](https://github.com/element-hq/dendrite)
   itself — report to the Dendrite project
 - Vulnerabilities in the Matrix protocol or other homeservers
 

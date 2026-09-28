@@ -5,7 +5,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## What this is
 
 An MCP server (TypeScript, `@modelcontextprotocol/sdk`) that wraps
-[Dendrite](https://github.com/matrix-org/dendrite)'s admin API — Dendrite is
+[Dendrite](https://github.com/element-hq/dendrite)'s admin API — Dendrite is
 a Matrix homeserver implementation written in Go; this repo is not part of
 Dendrite itself, it's a separate client that talks to a running Dendrite
 instance over HTTP. Each MCP tool corresponds to one Dendrite admin endpoint.

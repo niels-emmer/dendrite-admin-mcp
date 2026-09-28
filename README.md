@@ -1,6 +1,6 @@
 # dendrite-admin-mcp
 
-An **agent-installable MCP server** for administering a [Dendrite](https://github.com/matrix-org/dendrite)
+An **agent-installable MCP server** for administering a [Dendrite](https://github.com/element-hq/dendrite)
 Matrix homeserver. Install it once, and any MCP-capable agent — Claude Code,
 Codex, opencode, GitHub Copilot, Pi, and more — can administer your homeserver
 for you.

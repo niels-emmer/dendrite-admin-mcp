@@ -2,7 +2,7 @@
 
 > Machine-readable description for agent integration. Keep this file current — agents read it instead of probing the service.
 
-This is an MCP (Model Context Protocol) server that exposes [Dendrite](https://github.com/matrix-org/dendrite)'s
+This is an MCP (Model Context Protocol) server that exposes [Dendrite](https://github.com/element-hq/dendrite)'s
 admin API as tools. It has two surfaces:
 
 1. **The MCP server's own HTTP surface** (only when `MCP_TRANSPORT=http`) — `/healthz` and the `/mcp` JSON-RPC endpoint.
