@@ -21,7 +21,9 @@ All 15 tools map 1:1 to Dendrite's admin API — see [`API.md`](API.md) for the 
 
 In any agentic environment, just ask:
 
-> Install the dendrite MCP server from https://github.com/niels-emmer/dendrite-admin-mcp
+```
+Install the dendrite MCP server from https://github.com/niels-emmer/dendrite-admin-mcp
+```
 
 The agent will clone this repo, run `npm run setup` (prompting you for your
 homeserver URL and admin token), build and test it, and register it with your
