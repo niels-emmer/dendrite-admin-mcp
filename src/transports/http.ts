@@ -1,4 +1,5 @@
 import { timingSafeEqual } from "node:crypto";
+import type { Server } from "node:http";
 import type { NextFunction, Request, Response } from "express";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StreamableHTTPServerTransport } from "@modelcontextprotocol/sdk/server/streamableHttp.js";
@@ -43,7 +44,7 @@ function requireAuth(authToken: string) {
   };
 }
 
-export async function startHttpServer(client: DendriteClient, config: Config): Promise<void> {
+export async function startHttpServer(client: DendriteClient, config: Config): Promise<Server> {
   const authToken = process.env.MCP_AUTH_TOKEN;
   if (!authToken) {
     throw new Error(
@@ -99,4 +100,6 @@ export async function startHttpServer(client: DendriteClient, config: Config): P
     console.error("HTTP server error:", err);
     process.exit(1);
   });
+
+  return httpServer;
 }

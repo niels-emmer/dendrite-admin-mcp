@@ -13,19 +13,31 @@ instance over HTTP. Each MCP tool corresponds to one Dendrite admin endpoint.
 ## Commands
 
 ```bash
-npm install         # install deps
+npm ci              # install deps (lockfile is committed)
 npm run build        # tsc -> dist/
 npm run dev           # tsx watch src/index.ts (hot-reload dev server)
 npm start              # run the built server (node dist/index.js)
-npm run typecheck       # tsc --noEmit
+npm run typecheck       # tsc --noEmit (src + tests, via tsconfig.test.json)
+npm test                # node:test suite via tsx --test (test/*.test.ts)
+npm run setup           # interactive .env setup + install/build/test + agent registration snippets
 npm run inspector        # launch @modelcontextprotocol/inspector against the built server (stdio only)
 
 docker compose up -d --build   # build + run the HTTP-transport server, restart: unless-stopped
 ```
 
-There is no test suite yet. There is no lint script configured. npm is
-configured globally with `package-lock=false` on this machine — there is no
-lockfile, and the Dockerfile uses `npm install`, not `npm ci`.
+Tests live in `test/*.test.ts` (node:test + node:assert, run through `tsx --test` —
+no test framework dependency). `tsconfig.test.json` extends the base config with
+`noEmit` so tests are typechecked but never emitted into `dist/`.
+
+Dependencies are pinned to exact versions and `package-lock.json` is committed
+(the repo's `.npmrc` sets `package-lock=true`, overriding the machine-global
+`package-lock=false`). The Dockerfile uses `npm ci` in both stages.
+
+`scripts/setup.mjs` (`npm run setup`) is the agent-facing install path: it
+prompts for (or accepts via flags) `DENDRITE_BASE_URL` and
+`DENDRITE_ADMIN_TOKEN`, writes `.env`, installs, builds, tests, and prints the
+MCP registration snippet for the user's agent. Keep the README quickstart and
+the per-agent snippets in sync with it.
 
 Required env vars (see `.env.example`): `DENDRITE_BASE_URL`,
 `DENDRITE_ADMIN_TOKEN`. `DENDRITE_REGISTRATION_SHARED_SECRET` is optional,

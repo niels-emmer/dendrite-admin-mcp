@@ -9,6 +9,56 @@ interface RegisterNonceResponse {
   nonce: string;
 }
 
+/**
+ * Compute the HMAC-SHA1 MAC for shared-secret registration, per the Synapse
+ * protocol: HMAC-SHA1(nonce + "\0" + username + "\0" + password + "\0" +
+ * ("admin"|"notadmin"), registration_shared_secret). Extracted as a pure
+ * function so the protocol logic is unit-testable.
+ */
+export function computeRegistrationMac(
+  nonce: string,
+  username: string,
+  password: string,
+  admin: boolean,
+  sharedSecret: string,
+): string {
+  const adminFlag = admin ? "admin" : "notadmin";
+  return createHmac("sha1", sharedSecret)
+    .update(`${nonce}\0${username}\0${password}\0${adminFlag}`)
+    .digest("hex");
+}
+
+export async function registerUser(
+  client: DendriteClient,
+  config: Config,
+  params: { username: string; password: string; admin: boolean; displayname?: string },
+): Promise<unknown> {
+  if (!config.registrationSharedSecret) {
+    throw new Error(
+      "DENDRITE_REGISTRATION_SHARED_SECRET is not configured; register_user is unavailable.",
+    );
+  }
+
+  const { nonce } = await client.request<RegisterNonceResponse>(
+    "GET",
+    "/_synapse/admin/v1/register",
+    { auth: false },
+  );
+
+  const mac = computeRegistrationMac(
+    nonce,
+    params.username,
+    params.password,
+    params.admin,
+    config.registrationSharedSecret,
+  );
+
+  return client.request("POST", "/_synapse/admin/v1/register", {
+    auth: false,
+    body: { nonce, username: params.username, password: params.password, admin: params.admin, displayname: params.displayname, mac },
+  });
+}
+
 export function registerUserTools(server: McpServer, client: DendriteClient, config: Config) {
   server.registerTool(
     "evacuate_user",
@@ -77,29 +127,7 @@ export function registerUserTools(server: McpServer, client: DendriteClient, con
       },
     },
     async ({ username, password, admin, displayname }) =>
-      run(async () => {
-        if (!config.registrationSharedSecret) {
-          throw new Error(
-            "DENDRITE_REGISTRATION_SHARED_SECRET is not configured; register_user is unavailable.",
-          );
-        }
-
-        const { nonce } = await client.request<RegisterNonceResponse>(
-          "GET",
-          "/_synapse/admin/v1/register",
-          { auth: false },
-        );
-
-        const adminFlag = admin ? "admin" : "notadmin";
-        const mac = createHmac("sha1", config.registrationSharedSecret)
-          .update(`${nonce}\0${username}\0${password}\0${adminFlag}`)
-          .digest("hex");
-
-        return client.request("POST", "/_synapse/admin/v1/register", {
-          auth: false,
-          body: { nonce, username, password, admin, displayname, mac },
-        });
-      }),
+      run(() => registerUser(client, config, { username, password, admin, displayname })),
   );
 
   server.registerTool(
