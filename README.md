@@ -1,9 +1,31 @@
 # dendrite-admin-mcp
 
-An MCP (Model Context Protocol) server that exposes [Dendrite](https://github.com/matrix-org/dendrite)'s
-admin API as tools, so an LLM agent can administer a Matrix homeserver:
-manage users, evacuate/purge rooms, send server notices, manage registration
-tokens, and more.
+An **agent-installable MCP server** for administering a [Dendrite](https://github.com/matrix-org/dendrite)
+Matrix homeserver. Install it once, and any MCP-capable agent — Claude Code,
+Codex, opencode, GitHub Copilot, Pi, and more — can administer your homeserver
+for you.
+
+## What you can do with it
+
+Give your agent the power to:
+
+- **Manage users** — register accounts (shared-secret), reset passwords, evacuate users from all rooms, inspect live sessions (`whois`), refresh remote users' devices
+- **Manage rooms** — evacuate a room, purge a room (irreversible), download room state from a federated server for federation debugging
+- **Send server notices** — push an `m.text` message from the server to a user
+- **Manage registration tokens** — list, create, update, delete
+- **Reindex full-text search**
+
+All 15 tools map 1:1 to Dendrite's admin API — see [`API.md`](API.md) for the full reference.
+
+## Install it with your agent
+
+In any agentic environment, just ask:
+
+> Install the dendrite MCP server from <this-repo-url>.
+
+The agent will clone this repo, run `npm run setup` (prompting you for your
+homeserver URL and admin token), build and test it, and register it with your
+agent. Or install it yourself:
 
 ## Install (quickstart)
 
